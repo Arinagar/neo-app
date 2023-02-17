@@ -1,8 +1,45 @@
-const DataCard = () => {
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Stack,
+  StackDivider,
+  Text,
+} from "@chakra-ui/react";
+
+const DataCard = ({ data, time }) => {
+  data[0].map((el) => console.log(el.close_approach_data[0]));
+
+  function getMaxOfArray(numArray) {
+    return Math.max.apply(null, numArray).toLocaleString("en");
+  }
+
+  function getMinOfArray(numArray) {
+    return Math.min.apply(null, numArray).toLocaleString("en");
+  }
+
+  const maxVelocity = getMaxOfArray(
+    data[0].map((el) =>
+      Number(
+        Math.round(
+          el.close_approach_data[0].relative_velocity.kilometers_per_hour
+        )
+      )
+    )
+  );
+
+  const closestNeo = getMinOfArray(
+    data[0].map((el) =>
+      Number(Math.round(el.close_approach_data[0].miss_distance.kilometers))
+    )
+  );
+
   return (
     <Card>
       <CardHeader>
-        <Heading size="md">Day</Heading>
+        <Heading size="md">{time}</Heading>
       </CardHeader>
 
       <CardBody>
@@ -12,7 +49,7 @@ const DataCard = () => {
               Max diameter
             </Heading>
             <Text pt="2" fontSize="sm">
-              View a summary of all your clients over the last month.
+              View a summary of all your cliensts over the last month.
             </Text>
           </Box>
           <Box>
@@ -25,18 +62,18 @@ const DataCard = () => {
           </Box>
           <Box>
             <Heading size="xs" textTransform="uppercase">
-              Closest NEO
+              {closestNeo} km
             </Heading>
             <Text pt="2" fontSize="sm">
-              See a detailed analysis of all your business clients.
+              Distance between Earth and closest NEO
             </Text>
           </Box>
           <Box>
             <Heading size="xs" textTransform="uppercase">
-              Fastest NEO
+              {maxVelocity} kmph
             </Heading>
             <Text pt="2" fontSize="sm">
-              See a detailed analysis of all your business clients.
+              Speed of the fastest NEO
             </Text>
           </Box>
         </Stack>
@@ -44,3 +81,5 @@ const DataCard = () => {
     </Card>
   );
 };
+
+export default DataCard;

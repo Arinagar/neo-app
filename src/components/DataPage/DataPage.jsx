@@ -13,6 +13,8 @@ const DataPage = () => {
       <GridItem
         area={"main"}
         display="flex"
+        flexDirection="row"
+        flexWrap="wrap"
         alignItems="center"
         justifyContent="center"
         bgImage={`url(${universe})`}
