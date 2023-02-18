@@ -10,18 +10,35 @@ import {
 } from "@chakra-ui/react";
 
 const DataCard = ({ data, time }) => {
-  data[0].map((el) => console.log(el.close_approach_data[0]));
-
   function getMaxOfArray(numArray) {
-    return Math.max.apply(null, numArray).toLocaleString("en");
+    return Math.max
+      .apply(null, numArray)
+      .toLocaleString("en")
+      .replace(".", ",");
   }
 
   function getMinOfArray(numArray) {
     return Math.min.apply(null, numArray).toLocaleString("en");
   }
 
+  const maxDiameter = getMaxOfArray(
+    data.map((el) =>
+      el.estimated_diameter.kilometers.estimated_diameter_max.toFixed(3)
+    )
+  )
+    .split(" ")
+    .join(",");
+
+  const potentialHazard = data.reduce((reducer, el) => {
+    if (el.is_potentially_hazardous_asteroid === true) {
+      return reducer + 1;
+    } else {
+      return reducer;
+    }
+  }, 0);
+
   const maxVelocity = getMaxOfArray(
-    data[0].map((el) =>
+    data.map((el) =>
       Number(
         Math.round(
           el.close_approach_data[0].relative_velocity.kilometers_per_hour
@@ -31,7 +48,7 @@ const DataCard = ({ data, time }) => {
   );
 
   const closestNeo = getMinOfArray(
-    data[0].map((el) =>
+    data.map((el) =>
       Number(Math.round(el.close_approach_data[0].miss_distance.kilometers))
     )
   );
@@ -46,18 +63,18 @@ const DataCard = ({ data, time }) => {
         <Stack divider={<StackDivider />} spacing="4">
           <Box>
             <Heading size="xs" textTransform="uppercase">
-              Max diameter
+              {maxDiameter} km
             </Heading>
             <Text pt="2" fontSize="sm">
-              View a summary of all your cliensts over the last month.
+              Max diameter of NEO per day
             </Text>
           </Box>
           <Box>
             <Heading size="xs" textTransform="uppercase">
-              Potentially hazardous NEOs
+              {potentialHazard} pcs
             </Heading>
             <Text pt="2" fontSize="sm">
-              Check out the overview of your clients.
+              Number of potentially hazardous NEOs
             </Text>
           </Box>
           <Box>
