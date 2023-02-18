@@ -11,29 +11,66 @@ const DaysList = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const today = new Date();
+  const initialDate = new Date(today.getFullYear(), today.getMonth(), 1);
+  const daysToLoop = Math.floor(
+    (today.getTime() - initialDate.getTime()) / 86400000
+  );
+  const intervalTime = 5000;
+  console.log(daysToLoop);
+  function addDay(someDay, daysToAdd) {
+    const start_date = new Date(someDay);
+
+    let current_date = new Date(start_date);
+    current_date.setDate(current_date.getDate() + daysToAdd);
+
+    const formatted_date =
+      current_date.getFullYear() +
+      "-" +
+      (current_date.getMonth() + 1).toString().padStart(2, "0") +
+      "-" +
+      current_date.getDate().toString().padStart(2, "0");
+
+    return formatted_date;
+  }
+
   useEffect(() => {
-    const fetchNeos = async () => {
+    const fetchNeos = async (inputDate) => {
       setError("");
-      const startDate = "2023-02-01";
+
       try {
-        const data = await fetchData(startDate);
+        const data = await fetchData(inputDate);
         const transformData = Object.entries(data).map(([key, value]) => {
           return { key, value };
         });
-        setNeo(transformData);
+        setNeo((prevNeo) => [...prevNeo, ...transformData]);
       } catch (error) {
         setError("something went wrong");
       } finally {
         setIsLoading(false);
       }
     };
-    fetchNeos();
+
+    let currentDate = new Date(initialDate);
 
     const interval = setInterval(() => {
-      fetchNeos();
+      const formattedDate =
+        currentDate.getFullYear() +
+        "-" +
+        (currentDate.getMonth() + 1).toString().padStart(2, "0") +
+        "-" +
+        currentDate.getDate().toString().padStart(2, "0");
 
-      return () => clearInterval(interval);
-    }, 5000);
+      fetchNeos(formattedDate);
+
+      currentDate.setDate(currentDate.getDate() + 1);
+
+      if (currentDate > new Date(addDay(initialDate, daysToLoop))) {
+        currentDate = new Date(initialDate);
+      }
+    }, intervalTime);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -46,22 +83,12 @@ const DaysList = () => {
     >
       {neo.length > 0 &&
         !isLoading &&
-        neo
-          .sort((a, b) => {
-            if (a.key < b.key) {
-              return -1;
-            }
-            if (a.key > b.key) {
-              return 1;
-            }
-            return 0;
-          })
-          .map((el) => {
-            if (neo.length > 6) {
-              neo.shift();
-            }
-            return <DataCard data={el.value} key={nanoid(10)} time={el.key} />;
-          })}
+        neo.map((el) => {
+          if (neo.length > 6) {
+            neo.shift();
+          }
+          return <DataCard data={el.value} key={nanoid(10)} time={el.key} />;
+        })}
     </Box>
   );
 };

@@ -54,7 +54,7 @@ const DataCard = ({ data, time }) => {
   );
 
   return (
-    <Card>
+    <Card opacity="0.87">
       <CardHeader>
         <Heading size="md">{time}</Heading>
       </CardHeader>
