@@ -5,8 +5,8 @@
 }
 
 .loading {
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
 }
 svg {
   animation: rotate 1s linear infinite;
@@ -15,8 +15,8 @@ svg {
 
 .loading__ring {
   position: absolute;
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
 }
 
 .loading__ring:first-child {
