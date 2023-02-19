@@ -5,6 +5,7 @@ import { Box } from "@chakra-ui/react";
 
 import { fetchData } from "../../services/api";
 import DataCard from "../DataCard/DataCard";
+import { Loader } from "../Loader/Loader";
 
 const DaysList = () => {
   const [neo, setNeo] = useState([]);
@@ -94,8 +95,6 @@ const DaysList = () => {
   );
   const redFlag = sortedHazardousDays.slice(0, 2).map((el) => el[0]);
 
-  // console.log(sortedHazardousDays.slice(0, 2).map((el) => el[0]));
-
   return (
     <Box
       display="flex"
@@ -105,6 +104,7 @@ const DaysList = () => {
       gap="20px"
       width="1200px"
     >
+      {(!neo || isLoading) && <Loader />}
       {neo.length > 0 &&
         !isLoading &&
         neo.map((el) => {

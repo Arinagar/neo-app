@@ -22,10 +22,6 @@ const DataCard = ({ data, time, redFlag }) => {
     return Math.min.apply(null, numArray).toLocaleString("en");
   }
 
-  function getRedFlag(arr) {
-    arr.map((el) => el);
-  }
-
   const maxDiameter = getMaxOfArray(
     data.map((el) =>
       el.estimated_diameter.kilometers.estimated_diameter_max.toFixed(3)
@@ -58,8 +54,6 @@ const DataCard = ({ data, time, redFlag }) => {
     )
   );
 
-  const colorRed = getRedFlag(redFlag);
-  console.log(colorRed);
   return (
     <Card
       opacity="0.87"

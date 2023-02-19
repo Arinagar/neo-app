@@ -1,0 +1,32 @@
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  width: 500px;
+  height: 500px;
+}
+svg {
+  animation: rotate 1s linear infinite;
+  fill: rgba(186, 54, 75, 0.8);
+}
+
+.loading__ring {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+}
+
+.loading__ring:first-child {
+  transform: skew(30deg, 20deg);
+}
+
+.loading__ring:last-child {
+  transform: skew(-30deg, -20deg) scale(-1, 1);
+}
+
+.loading__ring .lc_svg {
+  animation-delay: -0.5s;
+}
