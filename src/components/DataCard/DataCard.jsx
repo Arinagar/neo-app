@@ -3,13 +3,14 @@ import {
   Card,
   CardBody,
   CardHeader,
+  color,
   Heading,
   Stack,
   StackDivider,
   Text,
 } from "@chakra-ui/react";
 
-const DataCard = ({ data, time }) => {
+const DataCard = ({ data, time, redFlag }) => {
   function getMaxOfArray(numArray) {
     return Math.max
       .apply(null, numArray)
@@ -19,6 +20,10 @@ const DataCard = ({ data, time }) => {
 
   function getMinOfArray(numArray) {
     return Math.min.apply(null, numArray).toLocaleString("en");
+  }
+
+  function getRedFlag(arr) {
+    arr.map((el) => el);
   }
 
   const maxDiameter = getMaxOfArray(
@@ -53,8 +58,14 @@ const DataCard = ({ data, time }) => {
     )
   );
 
+  const colorRed = getRedFlag(redFlag);
+  console.log(colorRed);
   return (
-    <Card opacity="0.87">
+    <Card
+      opacity="0.87"
+      bgColor={redFlag.includes(time) ? "#C53030" : "white"}
+      color={redFlag.includes(time) ? "white" : "black"}
+    >
       <CardHeader>
         <Heading size="md">{time}</Heading>
       </CardHeader>

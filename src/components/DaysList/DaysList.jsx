@@ -17,11 +17,9 @@ const DaysList = () => {
     (today.getTime() - initialDate.getTime()) / 86400000
   );
   const intervalTime = 5000;
-  console.log(daysToLoop);
-  function addDay(someDay, daysToAdd) {
-    const start_date = new Date(someDay);
 
-    let current_date = new Date(start_date);
+  function addDay(someDay, daysToAdd) {
+    let current_date = new Date(someDay);
     current_date.setDate(current_date.getDate() + daysToAdd);
 
     const formatted_date =
@@ -73,6 +71,31 @@ const DaysList = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const hazardousNEOs = neo.flatMap((el) =>
+    el.value.filter((item) => item.is_potentially_hazardous_asteroid === true)
+  );
+
+  const hazardousDays = [
+    ...new Set(
+      hazardousNEOs.map((el) => el.close_approach_data[0].close_approach_date)
+    ),
+  ];
+
+  const hazardousNEOsCount = hazardousDays.reduce((acc, day) => {
+    const count = hazardousNEOs.filter(
+      (neo) => neo.close_approach_data[0].close_approach_date === day
+    ).length;
+    acc[day] = count;
+    return acc;
+  }, {});
+
+  const sortedHazardousDays = Object.entries(hazardousNEOsCount).sort(
+    (a, b) => b[1] - a[1]
+  );
+  const redFlag = sortedHazardousDays.slice(0, 2).map((el) => el[0]);
+
+  // console.log(sortedHazardousDays.slice(0, 2).map((el) => el[0]));
+
   return (
     <Box
       display="flex"
@@ -80,6 +103,7 @@ const DaysList = () => {
       alignItems="center"
       justifyContent="center"
       gap="20px"
+      width="1200px"
     >
       {neo.length > 0 &&
         !isLoading &&
@@ -87,7 +111,14 @@ const DaysList = () => {
           if (neo.length > 6) {
             neo.shift();
           }
-          return <DataCard data={el.value} key={nanoid(10)} time={el.key} />;
+          return (
+            <DataCard
+              data={el.value}
+              key={nanoid(10)}
+              time={el.key}
+              redFlag={redFlag}
+            />
+          );
         })}
     </Box>
   );
