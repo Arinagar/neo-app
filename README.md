@@ -11,4 +11,4 @@ Each card contains a count of potentially hazardous for collision with Earth NEO
 Technologies stack: 
 + React
 + Chakra UI
-+ Vite
++ Vite.js
